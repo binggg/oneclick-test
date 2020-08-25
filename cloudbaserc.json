@@ -1,0 +1,20 @@
+{
+  "envId": "website-4gx79tn6f7282ae5",
+  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+  "framework": {
+    "name": "test-contaienr",
+    "plugins": {
+      "app": {
+        "use": "@cloudbase/framework-plugin-container",
+        "inputs": {
+          "serviceName": "nginx-api",
+          "servicePath": "/nginx-api",
+          "uploadType": "image",
+          "imageInfo": {
+            "imageUrl": "ccr.ccs.tencentyun.com/3211064422/nginx:test"
+          }
+        }
+      }
+    }
+  }
+}
