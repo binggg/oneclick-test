@@ -1,18 +1,106 @@
 {
-  "envId": "website-4gx79tn6f7282ae5",
   "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+  "version": "2.0",
+  "envId": "{{env.ENV_ID}}",
   "framework": {
-    "name": "test-contaienr",
+    "name": "ww-tcb-tpl-node",
     "plugins": {
-      "app": {
-        "use": "@cloudbase/framework-plugin-container",
+      "functions": {
+        "use": "@cloudbase/framework-plugin-function",
         "inputs": {
-          "serviceName": "nginx-api",
-          "servicePath": "/nginx-api",
-          "uploadType": "image",
-          "imageInfo": {
-            "imageUrl": "ccr.ccs.tencentyun.com/3211064422/nginx:test"
+          "functionRootPath": "functions",
+          "functions": [
+            {
+              "name": "get-jsapi-signature",
+              "envVariables": {
+                "MY_SUITE_ID": "{{env.MY_SUITE_ID}}"
+              }
+            }
+          ]
+        }
+      },
+      "node": {
+        "use": "@cloudbase/framework-plugin-node",
+        "inputs": {
+          "name": "index",
+          "path": "/",
+          "functionOptions": {
+            "envVariables": {
+              "ENV_ID": "{{env.ENV_ID}}",
+              "WECOM_PROVIDER_ID": "{{env.WECOM_PROVIDER_ID}}",
+              "MY_SUITE_ID": "{{env.MY_SUITE_ID}}",
+              "MY_ENV_SECRET_ID": "{{env.MY_ENV_SECRET_ID}}",
+              "MY_ENV_SECRET_KEY": "{{env.MY_ENV_SECRET_KEY}}",
+              "MY_CUSTOM_LOGIN_PRIVATE_KEY_ID": "{{env.MY_CUSTOM_LOGIN_PRIVATE_KEY_ID}}",
+              "MY_CUSTOM_LOGIN_PRIVATE_KEY": "{{env.MY_CUSTOM_LOGIN_PRIVATE_KEY}}",
+              "WECOM_DEBUG": "{{env.WECOM_DEBUG}}"
+            }
           }
+        }
+      },
+      "wecom": {
+        "use": "@wecom/cloudbase-framework-plugin@0.3.0-alpha.10",
+        "inputs": {
+          "providerId": "{{env.WECOM_PROVIDER_ID}}",
+          "providerSecret": "{{env.WECOM_PROVIDER_SECRET}}",
+          "token": "{{env.WECOM_TOKEN}}",
+          "encodingAESKey": "{{env.WECOM_ENCODING_AES_KEY}}",
+          "suiteList": [
+            {
+              "suiteId": "{{env.MY_SUITE_ID}}",
+              "suiteSecret": "{{env.MY_SUITE_SECRET}}"
+            }
+          ],
+          "callbackEntry": "{{env.WECOM_CALLBACK_ENTRY}}",
+          "customCallbackFunction": "{{env.WECOM_CUSTOM_CALLBACK_FUNCTION}}",
+          "sessionExpirationTime": "{{env.WECOM_SESSION_EXPIRATION_TIME}}",
+          "debug": "{{env.WECOM_DEBUG}}"
+        }
+      }
+    },
+    "requirement": {
+      "environment": {
+        "WECOM_PROVIDER_ID": {
+          "description": "服务商企业 ID",
+          "required": true
+        },
+        "WECOM_PROVIDER_SECRET": {
+          "description": "服务商 ProviderSecret",
+          "required": true
+        },
+        "WECOM_TOKEN": {
+          "description": "加解密 Token",
+          "required": true
+        },
+        "WECOM_ENCODING_AES_KEY": {
+          "description": "加解密 EncodingAESKey",
+          "required": true
+        },
+        "MY_SUITE_ID": {
+          "description": "第三方应用 ID",
+          "required": true
+        },
+        "MY_SUITE_SECRET": {
+          "description": "第三方应用 secret",
+          "required": true
+        },
+        "WECOM_CALLBACK_ENTRY": {
+          "description": "回调 URL 路径",
+          "required": false,
+          "default": "/ww-callback"
+        },
+        "WECOM_CUSTOM_CALLBACK_FUNCTION": {
+          "description": "自定义回调云函数名称",
+          "required": false
+        },
+        "WECOM_SESSION_EXPIRATION_TIME": {
+          "description": "cookie 登录态过期时间（毫秒）",
+          "required": false,
+          "default": "7200000"
+        },
+        "WECOM_DEBUG": {
+          "description": "开启调试日志",
+          "required": false
         }
       }
     }
